@@ -179,7 +179,7 @@
                 html += '           <div class="key flex_full"><span><i>津</i></span></div>';
                 html += '           <div class="key flex_full"><span><i>冀</i></span></div>';
 
-                html += '           <div class="key flex_full"><span><i>豫</i></span></div>';
+                html += '           <div class="key flex_full"><span><i>豫</i></span></div>' ;
                 html += '           <div class="key flex_full"><span><i>云</i></span></div>';
                 html += '           <div class="key flex_full"><span><i>辽</i></span></div>';
                 html += '           <div class="key flex_full"><span><i>黑</i></span></div>';

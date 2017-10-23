@@ -1,0 +1,216 @@
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no"/>
+    <title>查询停车费</title>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="css/parking/zepto.alert.css">
+    <link rel="stylesheet" href="css/parking/che.css"/>
+    <link rel="stylesheet" href="css/parking/car.css"/>
+    <link rel="stylesheet" type="text/css" href="css/parking/keyboard.css">
+</head>
+<style>
+    body {
+        background-color: #eff4fb;
+    }
+</style>
+<body>
+<div class="logobar">
+    <!-- <div class="gslogo"><img
+            src="/resources/img/default.png">
+    </div> -->
+    <div class="gsname">凤凰城停车场</div>
+</div>
+
+<div class="tit_bdcp_v2"><span>查询停车费</span></div>
+<div class="searchbar">
+    <!-- 默认文字placeholder -->
+    <div id="icon_energy" class="icon_energy"></div>
+    <span id="placeholder">点此输入车牌</span>
+    <!-- 车牌号码 用来放输入车牌-->
+    <span id="carplatnum"></span>
+    <div class="cp_btn">
+        <a href="javascript:void(0)" class="btn_search" title="查询"></a>
+    </div>
+</div>
+
+<div class="show-message hidden" style="font-size: 15px;" >
+    <li class="list-group-item enter-parking">
+        <span class="label  ">入场时间</span> <span class="enter-time"></span>
+    </li>
+    <li class="list-group-item should-pay">
+        <span class="label ">应缴金额</span> <span class="pay"></span>
+    </li>
+    <div class="reminder"> <span class="pay-way">支付方式</span></div>
+
+    <li class="list-group-item wechat row-radio" name="pay">
+        <span class="label "><img style="width: 22px;" src="css/parking/img/wechat1.png" alt=""></span>
+        <span class="radio pull-right" name="sex" data-value="wechat"><ins class="checked"></ins></span>
+    </li>
+    <li class="list-group-item zhifubao row-radio" name="pay">
+        <span class="label "><img style="width: 22px;" src="css/parking/img/zhifubao.jpg" alt=""></span>
+        <span class="radio pull-right" name="sex" data-value="zhifubao"><ins></ins></span>
+    </li>
+
+
+    <div class="text-center">
+        <a href="javascript:;" class="btn btn-info go-pay">去支付</a>
+    </div>
+</div>
+
+<!-- 加载框 -->
+<div class="pop_rec">
+    <p>
+        <img src="css/parking/img/loading_bgb.gif" class="pic_loading"/><br/><span>正在查询中</span>
+    </p>
+</div>
+
+<script src="js/parking/zepto.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/parking/zepto.cookie.min.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/parking/common.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/parking/zepto.alert.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/parking/plate_number_index.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/parking/keyboard.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    var cpBase = "/";//键盘需要
+    (function ($) {
+        var lpnSelect = $.fn.lpnSelect();
+        lpnSelect.initKeyboard("body");//初始化键盘
+
+        $('a.btn_search,dl.list_lsjl dd').on('click', function (event) {
+
+            var plateNumber = ""
+            if ($(this).attr('tagName') == 'A') {
+                plateNumber = lpnSelect.getCarPlateNumberValue();
+            } else {
+                plateNumber = $(this).text();
+            }
+
+            if (checkCardNo(plateNumber)) {
+                clickHandler(plateNumber);
+            }
+            event.stopPropagation();
+        });
+        function clickHandler(carNo) {
+            var loading = $.dialog({content: '正在查询中...'});
+            if (!checkCardNo(carNo)) {
+                loading.close();
+                return;
+            }
+            console.log(carNo.length);
+//            setSource();
+            $.ajax({
+                url: "a.json",
+                type: "GET",
+                dataType: 'json',
+                data: carNo,
+                success: function(data){
+                    console.log(data);
+                    if(data.Code == 1){
+                        loading.close();
+                        $(".show-message").removeClass("hidden");
+                        $(".inputNumber").remove();
+                        $(".enter-time").html(data.Data.enterTime);
+                        $(".pay").html(data.Data.pay + "元");
+                    } else {
+                        loading.close();
+                        $.dialog({content: "对不起，找不到缴费信息", title: "alert", time: 2000});
+                    }
+                },
+                error: function(err){
+                    console.log(err);
+                }
+            })
+
+        }
+
+        function payAjax(carNum,url){
+            $.ajax({
+                url:url,
+                type: "GET",
+                dataType: 'json',
+                data: carNum,
+                success:function(data) {
+                    if(data.Code == 1){
+                        console.log("支付成功");
+                        location.href = 'success.html';
+                    } else {
+                        $.dialog({content: "支付失败，请重新支付", title: "alert", time: 2000});
+                    }
+                },
+                error:function(err){
+                    console.log(err)
+                }
+            })
+        }
+
+        //   支付按钮
+        $(".go-pay").on("touchstart",function(){
+            var payment = $(".checked").parent().data("value");
+            var carNum = $("#carplatnum").text();
+            if( payment == "wechat") {
+                var wxurl = "a.json";
+                payAjax(carNum,wxurl);
+
+                console.log("微信支付")
+            } else if(payment == "zhifubao") {
+                var aliurl = "a.json";
+                payAjax(carNum,aliurl);
+
+                console.log("支付宝支付")
+            } else {
+                $.dialog({content: "请选择支付方式", title: "alert", time: 2000});
+            }
+        })
+
+    })(Zepto);
+//选中效果
+    (function($) {
+        $.icheck = {
+            init: function() {
+                var _this = this;
+                _this._radio = "row-radio";
+                _this._checked = "checked";
+                _this._arrtype = [_this._radio];
+//                _this._mobile = /ipad|iphone|ipod|android|blackberry|windows phone|opera mini|silk/i.test(navigator.userAgent);
+                $.each(_this._arrtype, function(k, v) {
+                    _this.touchstart(v);
+
+                });
+            },
+            touchstart: function(elem) {
+                var _this = this;
+                console.log(elem);
+                elem = "." + elem;
+                $(document).on("touchstart", elem, function() {
+                    var $this = $(this),
+                            _ins = $this.find("ins");
+
+                    if ( _ins.hasClass("checked")) {
+                        _ins.removeClass("checked");
+                        console.log("haschecked")
+                    }
+                    else {
+                        if (/row-radio/ig.test(elem)) {
+                            var _name = $this.attr("name");
+                            console.log(elem)
+                            $(elem + "[name=" + _name + "]").find("ins").removeClass("checked");
+                        }
+                        _ins.addClass("checked");
+                    }
+
+                });
+            },
+
+        };
+
+        $.icheck.init();
+
+    })(jQuery);
+
+</script>
+</body>
+</html>

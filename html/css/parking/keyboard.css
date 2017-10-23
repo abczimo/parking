@@ -1,0 +1,228 @@
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    overflow-x: hidden;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    -webkit-tap-highlight-color: rgba(255, 0, 0, 0);
+    cursor: pointer;
+}
+
+body, html {
+    height: 100%;
+}
+
+a {
+    text-decoration: none;
+}
+
+a, input {
+    -webkit-tap-highlight-color: rgba(255, 0, 0, 0);
+}
+
+*, *:after, *:before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.flex_center {
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+}
+
+.flex_full {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+}
+
+.flex_half {
+    -webkit-box-flex: 0.5;
+    -webkit-flex: 0.5;
+    -ms-flex: 0.5;
+    flex: 0.5;
+}
+
+.flex_half_2 {
+    -webkit-box-flex: 0.25;
+    -webkit-flex: 0.25;
+    -ms-flex: 0.25;
+    flex: 0.25;
+}
+
+.flex_half_3 {
+    -webkit-box-flex: 0.75;
+    -webkit-flex: 0.75;
+    -ms-flex: 0.75;
+    flex: 0.75;
+}
+
+.flex_twice {
+    -webkit-box-flex: 1.5;
+    -webkit-flex: 1.5;
+    -ms-flex: 1.5;
+    flex: 1.5;
+}
+
+.container {
+    height: 100%;
+}
+
+#carplatnum {
+    letter-spacing: 6px !important;
+}
+
+.keyboard_box {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #e1e3e7;
+    text-align: center;
+    box-shadow: 0 -2px 10px #e9e9e9;
+    z-index: 100;
+    display: none;
+    line-height: 1 !important;
+}
+
+.keyboard_box .bar {
+    height: 32px;
+    line-height: 32px;
+    background-color: #fff;
+}
+
+.keyboard_box .bar .k_close {
+    color: #259cf5;
+    font-size: 16px;
+    width: 50px;
+    text-align: center;
+    float: right;
+}
+
+.keyboard {
+    text-align: center;
+    padding: 0.6rem 0.4rem;
+    max-width: 500px;
+    /*max-height: 400px;*/
+    margin: 0 auto;
+    position: relative;
+}
+
+.keyboard .key_box {
+    margin-bottom: 0.5rem;
+}
+
+.keyboard .key_box:last-child {
+    margin-bottom: 0;
+}
+
+.keyboard .key_box .key span {
+    padding-bottom: 156%;
+    background-color: #fff;
+    display: inline-block;
+    width: 100%;
+    margin: 0;
+    border-radius: 5px;
+    font-size: 1.6rem;
+    position: relative;
+    box-shadow: 0 2px 2px #d7d7d7;
+    z-index: 50;
+}
+
+.keyboard .key_box .key span i {
+    position: absolute;
+    top: 50%;
+    height: 2rem;
+    line-height: 2rem;
+    width: 100%;
+    left: 0;
+    margin-top: -1rem;
+    font-style: normal;
+    color: #212121;
+}
+
+.keyboard .key_box .key {
+    margin-right: 0.5rem;
+    font-size: 0;
+}
+
+.keyboard .key_box .key:last-child {
+    margin-right: 0;
+}
+
+.keyboard .key_box .key.empty {
+    margin-right: 0.25rem;
+}
+
+.keyboard .key_box .key.m_r_none{
+    margin-right: 0;
+}
+
+.keyboard .key_box .key.empty span, .keyboard .key_box .key.empty_2 span, .keyboard .key_box .key.empty_3 span {
+    margin: 0;
+    background-color: rgba(0, 0, 0, 0);
+    box-shadow: none;
+}
+
+.keyboard .key_box .key.del span {
+    padding-bottom: 104%;
+    background: #c4c8cf url("img/delete.png") no-repeat center center;
+    background-size: 50%;
+}
+
+.keyboard .key_box .key.disable span {
+    background-color: #e9edf1;
+}
+
+.keyboard .key_box .key span.float {
+    z-index: 300;
+}
+
+.keyboard .click {
+    position: absolute;
+    top: -47px;
+    left: 32px;
+    z-index: -200;
+    width: 60px;
+    font-size: 0;
+    visibility: hidden;
+}
+
+.keyboard .click .float_num {
+    width: 100%;
+    text-align: center;
+    color: #212121;
+    font-size: 2.4rem;
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 60px;
+    line-height: 60px;
+}
+
+.keyboard .click img {
+    width: 100%;
+    /*position: relative;*/
+    /*z-index: 0;*/
+}
+
+.keyboard .click .cover {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 10;
+}

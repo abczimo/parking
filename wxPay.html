@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0"/>
+    <title>凤凰城停车场</title>
+    <link rel="stylesheet" href="css/parking/che.css"/>
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #eff4fb;
+        }
+        .show-message {
+            margin-top: 50px;
+            color: #4987f7;
+        }  
+        .show-money,
+        .show-time {     
+            background: #fff;
+            padding-left: 20px; 
+            line-height: 40px;
+        }
+        .show-money span {
+            font-size: 27px;
+            color: #f00;
+        }
+        .pay {
+           text-align: center; 
+        }
+        .go-pay {
+            padding: 8px 38%;
+            margin-top: 10%;
+        }
+        .pad-left {
+            padding-left: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="logobar">
+        <div class="gsname">凤凰城停车场</div>
+    </div>
+
+    <div class="content">
+        <div class="show-message">
+            <p class="show-time">入场时间 <span class="pad-left">2017-10-10 08:08:10</span></p>
+            <p class="show-money">支付金额<span class="pad-left"> 4元 </span></p>
+        </div>
+
+        <div class="pay"> 
+            <button class="btn btn-info go-pay" onclick="callpay()"> 立即支付</button>
+        </div>
+
+        <div class="cost-norm" style="font-size: 14px;color: #242424;padding: 12px;line-height: 20px;">
+            <span>停车收费标准</span>
+            <p>1.停车一小时内免费(6:00-23:00)</p>
+            <p>2.停车2小时内收费4元。每超过1小时加收1元，以此类推:不到一小时按一小时计算(6:00-23:00)</p>
+            <p>3.停车30分钟内免费，超过30分钟按夜间停车管理收费(23:00-6:00)</p>
+        </div>
+        
+    </div>
+</body>
+    <script type="text/javascript">
+        //调用微信JS api 支付
+        function jsApiCall() {
+            var s={{.Data}};
+        console.log(JSON.parse(s));
+            WeixinJSBridge.invoke(
+                    'getBrandWCPayRequest',
+                    JSON.parse(s),
+                    function (res) {
+                        WeixinJSBridge.log(res.err_msg);
+                        alert(res.err_code + res.err_desc + res.err_msg);
+                    }
+            );
+        }
+        function callpay() {
+            console.log(666)
+            if (typeof WeixinJSBridge == "undefined") {
+                if (document.addEventListener) {
+                    document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+                } else if (document.attachEvent) {
+                    document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+                    document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+                }
+            } else {
+                jsApiCall();
+            }
+        }
+    </script>
+</html>

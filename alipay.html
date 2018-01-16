@@ -1,0 +1,40 @@
+
+<html>
+<div class="">
+
+</div>
+<script src="js/jquery-3.1.1.min.js" type="text/javascript" charset="utf-8"></script>
+<script>
+  var timesRun = 0;
+  var begin  = null;
+  $(document).ready(function(){
+      start();
+      begin  = setInterval("start()",1000);
+  });
+
+  function start() {
+    $.ajax({
+      url: "a.json",
+      type: 'GET',
+      dataType: 'json',
+      data:{
+        carNo:"carNo"
+      },
+      success: function(data) {
+        console.log(data);
+        if(data.Code == 10) {
+          location.href = 'success.html';
+        }
+      },
+      error: function() {
+        location.href = 'index.html';
+      }
+    })
+      timesRun += 1;
+    if(timesRun === 5){
+    clearInterval(begin);
+    location.href = 'index.html';
+    }
+  }
+</script>
+</html>
